@@ -19,12 +19,12 @@ import './styles/styles.scss';
 
 const store = configureStore();
 
-store.subscribe(() => {
-    const state = store.getState();
-    console.log(state.filters);
-    const visibleExpenses = getVisibleExpenses(state.expenses, state.filters);
-    console.log(visibleExpenses);
-});
+// store.subscribe(() => {
+//     const state = store.getState();
+//     console.log(state.filters);
+//     const visibleExpenses = getVisibleExpenses(state.expenses, state.filters);
+//     console.log(visibleExpenses);
+// });
 
 // 1. set up Provider
 // then use connect
