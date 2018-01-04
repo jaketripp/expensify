@@ -43,6 +43,19 @@ export const removeExpense = ({ id } = {}) => ({
     id
 });
 
+// same call signature as removeExpense
+// test with should remove expense from firebase
+    // fetch and check val on snapshot, and if no data than it will be null
+// use start remove expense in editExpensePage instead
+// adjust editexpensepage tests
+export const startRemoveExpense = ({ id } = {}) => {
+    return (dispatch) => {
+        return database.ref(`expenses/${id}`).remove().then(() => {
+            dispatch(removeExpense({ id }));
+        });
+    };
+};
+
 // id string and updates obj
 export const editExpense = (id, updates) => ({
     type: 'EDIT_EXPENSE',
