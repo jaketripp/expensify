@@ -19,8 +19,9 @@ export const addExpense = (expense) => ({
 
 export const startAddExpense = (expenseData = {}) => {
     // returning a function relies on redux thunk
-    return (dispatch) => {
+    return (dispatch, getState) => {
         // pull these variables off the data passed in, default to '' and 0
+        const uid = getState().auth.uid;
         const {
             description = '',
             note = '',
@@ -29,7 +30,7 @@ export const startAddExpense = (expenseData = {}) => {
         } = expenseData;
         const expense = { description, note, amount, createdAt }
         // returning a promise instead of just having the promise run (similar to the idea of returning a function vs running function)
-        return database.ref('expenses').push(expense).then((ref) => {
+        return database.ref(`users/${uid}/expenses`).push(expense).then((ref) => {
             dispatch(addExpense({
                 id: ref.key,
                 ...expense
@@ -46,8 +47,9 @@ export const removeExpense = ({ id } = {}) => ({
 // use start remove expense in editExpensePage instead
 // adjust editexpensepage tests
 export const startRemoveExpense = ({ id } = {}) => {
-    return (dispatch) => {
-        return database.ref(`expenses/${id}`).remove().then(() => {
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid;
+        return database.ref(`users/${uid}/expenses/${id}`).remove().then(() => {
             dispatch(removeExpense({ id }));
         });
     };
@@ -61,8 +63,9 @@ export const editExpense = (id, updates) => ({
 });
 
 export const startEditExpense = (id, updates) => {
-    return (dispatch) => {
-        return database.ref(`expenses/${id}`).update(updates).then(() => {
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid;
+        return database.ref(`users/${uid}/expenses/${id}`).update(updates).then(() => {
             dispatch(editExpense(id, updates));
         });
     };
@@ -76,9 +79,10 @@ export const setExpenses = (expenses) => ({
 
 // SET_EXPENSES
 export const startSetExpenses = () => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         // need to return it so that you can attach a then call and render the data
-        return database.ref('expenses').once('value').then((snapshot) => {
+        const uid = getState().auth.uid;
+        return database.ref(`users/${uid}/expenses`).once('value').then((snapshot) => {
             const expenses = [];
 
             snapshot.forEach((childSnapshot) => {
