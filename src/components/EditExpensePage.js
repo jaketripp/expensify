@@ -1,16 +1,31 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ExpenseForm from './ExpenseForm';
-import { startEditExpense, startRemoveExpense } from '../actions/expenses';
+import RemoveExpenseModal from './RemoveExpenseModal';
+import { startEditExpense, startRemoveExpense, removeExpense } from '../actions/expenses';
 
 export class EditExpensePage extends React.Component {
+    state = {
+        isModalActive: undefined
+    }
     onSubmit = (expense) => {
         this.props.startEditExpense(this.props.expense.id, expense);
         this.props.history.push('/');
     }
-    onClick = () => {
+    showModal = () => {
+        this.setState((prevState) => ({
+            isModalActive: true
+        }));
+    }
+    closeModal = () => {
+        this.setState((prevState) => ({
+            isModalActive: undefined
+        }));
+    }
+    removeExpense = () => {
         this.props.startRemoveExpense({ id: this.props.expense.id });
         this.props.history.push('/');
+        this.closeModal();
     }
     render() {
         return (
@@ -25,8 +40,9 @@ export class EditExpensePage extends React.Component {
                         expense={this.props.expense}
                         onSubmit={this.onSubmit}
                     />
-                    <button className="button button--secondary" onClick={this.onClick}>Remove Expense</button>
+                    <button className="button button--secondary" onClick={this.showModal}>Remove Expense</button>
                 </div>
+                <RemoveExpenseModal isModalActive={this.state.isModalActive} closeModal={this.closeModal} removeExpense={this.removeExpense}/>
             </div>
         );
     }
