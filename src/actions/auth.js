@@ -1,4 +1,4 @@
-import { firebase, googleAuthProvider, facebookAuthProvider } from '../firebase/firebase';
+import { firebase, googleAuthProvider, facebookAuthProvider, githubAuthProvider, twitterAuthProvider } from '../firebase/firebase';
 
 export const login = ({ uid, displayName, photoURL }) => ({
     type: 'LOGIN',
@@ -49,35 +49,41 @@ export const startFacebookLogin = () => {
     };
 };
 
-// export const startLoginFacebook = () => {
-//     return () => {
-//         // try signing up with facebook
-//         return firebase.auth().signInWithPopup(facebookAuthProvider).catch((e) => {
-//             var email = e.email;
-//             var credential = e.credential;
-//             console.log(e);
-//             // if account already exists (shares an email)
-//             if (e.code === 'auth/account-exists-with-different-credential') {
-//                 // find which providers (i.e. 'google.com')
-//                 firebase.auth().fetchProvidersForEmail(email).then((providers) => {
-//                     if (providers.includes('google.com')) {
-//                         firebase.auth().signInWithRedirect(googleAuthProvider).then(() => {
-//                             console.log(firebase.auth());
-//                             // firebase.User.linkWithCredential(credential).then((result) => {
-//                             //     console.log('Linked!');
-//                             // }).catch((e) => {
-//                             //     console.log(e);
-//                             // });
-//                         }).catch((e) => {
-//                             console.log(e);
-//                             console.log(firebase.auth());
-//                         });
-//                     }
-//                 });
-//             }
-//         });
-//     };
-// };
+export const startGitHubLogin = () => {
+    return () => {
+        return firebase.auth().signInWithPopup(githubAuthProvider).catch(error => {
+            if (error.code === 'auth/account-exists-with-different-credential') {
+                const pendingCred = error.credential;
+                return firebase.auth().fetchProvidersForEmail(error.email).then(providers => {
+                    return firebase.auth().signInWithRedirect(googleAuthProvider).then(result => {
+                        return result.user;
+                    });
+                }).then(user => {
+                    return user.linkWithCredential(pendingCred);
+                });
+            }
+            throw error;
+        });
+    };
+};
+
+export const startTwitterLogin = () => {
+    return () => {
+        return firebase.auth().signInWithPopup(twitterAuthProvider).catch(error => {
+            if (error.code === 'auth/account-exists-with-different-credential') {
+                const pendingCred = error.credential;
+                return firebase.auth().fetchProvidersForEmail(error.email).then(providers => {
+                    return firebase.auth().signInWithRedirect(googleAuthProvider).then(result => {
+                        return result.user;
+                    });
+                }).then(user => {
+                    return user.linkWithCredential(pendingCred);
+                });
+            }
+            throw error;
+        });
+    };
+};
 
 export const logout = () => ({
     type: 'LOGOUT'

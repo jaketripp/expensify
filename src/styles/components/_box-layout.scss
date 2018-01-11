@@ -14,9 +14,15 @@
     padding: $l-size $m-size;
     text-align: center;
     width: 25rem;
+    max-width: 90%;
+    margin: 0 auto;
 }
 
 .box-layout__title {
     margin: 0 0 $m-size 0;
+    line-height: 1;
+}
+
+.box-layout__subtitle {
     line-height: 1;
 }
