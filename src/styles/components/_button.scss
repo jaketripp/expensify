@@ -21,3 +21,26 @@
 .button--danger {
     background: $danger;
 }
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button--social {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+    max-width: 95%;
+    width: 350px;
+}
+
+.button--google {
+    background-image: url('/images/signupGoogle.png');
+}
+
+.button--facebook {
+    background-image: url('/images/signupFB.png');
+}
