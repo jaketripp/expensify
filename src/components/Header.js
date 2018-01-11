@@ -9,7 +9,8 @@ export const Header = ({ name, img, startLogout }) => (
             <div className="header__content">
                 <Link className="header__title" to="/dashboard">
                     <h1>Expensify</h1>
-                    <p>{name} <img src={img} alt={`A picture of ${name}`} /></p>
+                    <p>{name}
+                    {!!img && <img src={img} alt={`A picture of ${name}`} />}</p>
                 </Link>
                 <button className="button button--link" onClick={startLogout}>Logout</button>
             </div>
