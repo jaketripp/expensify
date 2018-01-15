@@ -9,10 +9,22 @@ export const LoginPage = ({ startGoogleLogin, startFacebookLogin, startGitHubLog
             <p>It's time to get your expenses under control.</p>
             <h3 className="box-layout__subtitle">Choose one to log in:</h3>
             <div className="buttons">
-                <button className="button button--google button--social" onClick={startGoogleLogin}>Google</button>
-                <button className="button button--facebook button--social" onClick={startFacebookLogin}>Facebook</button>
-                <button className="button button--twitter button--social" onClick={startTwitterLogin}>Twitter</button>
-                <button className="button button--github button--social" onClick={startGitHubLogin}>GitHub</button>
+                <button className="button--google button--social" onClick={startGoogleLogin}>
+                    <img src="/images/google.png" alt="Google logo"/>
+                    Google
+                </button>
+                <button className="button--facebook button--social" onClick={startFacebookLogin}>
+                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                    Facebook
+                </button>
+                <button className="button--twitter button--social" onClick={startTwitterLogin}>
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    Twitter
+                </button>
+                <button className="button--github button--social" onClick={startGitHubLogin}>
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    GitHub
+                </button>
             </div>
         </div>
     </div>
